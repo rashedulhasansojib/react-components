@@ -15,6 +15,8 @@ const faqs = [
     text: "Excepturi velit laborum, perspiciatis nemo perferendis reiciendis aliquam possimus dolor sed! Dolore laborum ducimus veritatis facere molestias!",
   },
 ];
+
+//Accordion V1 (Multi Selection)
 function Accordion() {
   return (
     <div className="accordion">
