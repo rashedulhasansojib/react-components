@@ -15,11 +15,15 @@
 .accordion h2 {
   font-size: 32px;
   font-weight: 500;
-  margin-bottom: 64px;
+  margin-bottom: 32px;
   /* color: #087f5b; */
   color: #868e96;
 
   align-self: center;
+}
+
+.accordion button {
+  margin-bottom: 24px;
 }
 
 .accordion-item {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./Accordion.css";
 const faqs = [
@@ -16,29 +16,62 @@ const faqs = [
   },
 ];
 
-//Accordion V1 (Multi Selection)
+//Accordion V2 (Multi+Single Selection)
 function Accordion() {
+  const [multiSelection, setMultiSelection] = useState(false);
+  const [activeIndices, setActiveIndices] = useState([]);
+
+  useEffect(() => {
+    setActiveIndices([]);
+  }, [multiSelection]);
+
+  function handleToggle(index) {
+    if (multiSelection) {
+      if (activeIndices.includes(index)) {
+        setActiveIndices(activeIndices.filter((i) => i !== index));
+      } else {
+        setActiveIndices([...activeIndices, index]);
+      }
+    } else {
+      setActiveIndices(activeIndices.includes(index) ? [] : [index]);
+    }
+  }
+
   return (
     <div className="accordion">
       <h2>Frequently Asked Questions</h2>
+      <button
+        className="btn dark-btn"
+        onClick={() => setMultiSelection(!multiSelection)}
+      >
+        {multiSelection
+          ? "Switch to Single Selection"
+          : "Switch to Multi Selection"}
+      </button>
+
       {faqs.map((faq, i) => (
-        <AccordionItem title={faq.title} text={faq.text} num={i + 1} />
+        <AccordionItem
+          title={faq.title}
+          text={faq.text}
+          index={i}
+          key={i}
+          onToggle={handleToggle}
+          activeIndices={activeIndices}
+        />
       ))}
     </div>
   );
 }
 
-function AccordionItem({ title, text, num }) {
-  const [isOpen, setIsOpen] = useState(false);
-  function handleToggle() {
-    setIsOpen(!isOpen);
-  }
+function AccordionItem({ title, text, index, onToggle, activeIndices }) {
+  const isOpen = activeIndices.includes(index);
+
   return (
     <div
       className={`accordion-item ${isOpen ? "open" : ""}`}
-      onClick={handleToggle}
+      onClick={() => onToggle(index)}
     >
-      <p className="number">{num < 9 ? `0${num}` : num}</p>
+      <p className="number">{index < 9 ? `0${index + 1}` : index + 1}</p>
       <p className="title">{title}</p>
       <p className="icon">{isOpen ? "-" : "+"}</p>
       {isOpen && <div className="content-box">{text}</div>}
